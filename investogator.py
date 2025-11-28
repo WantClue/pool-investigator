@@ -341,7 +341,8 @@ class StratumClient:
         return messages
     
     def send_request(self, method: str, params: list) -> Tuple[Optional[Dict], List[Dict]]:
-        """Send request and return (response, notifications)"""
+        """Send request and return (response, notifications).
+        All notifications are automatically stored in pending_notifications."""
         current_id = self.request_id
         self.request_id += 1
         
@@ -372,7 +373,9 @@ class StratumClient:
                     print(f"[←] Response matched id={current_id}")
                 elif 'method' in msg:
                     notifications.append(msg)
-                    print(f"[←] Notification: {msg.get('method')}")
+                    # Automatically store ALL notifications for later use
+                    self.pending_notifications.append(msg)
+                    print(f"[←] Notification: {msg.get('method')} (stored)")
                 else:
                     # Could be a response with different id or error
                     if response is None and 'result' in msg:
@@ -410,9 +413,7 @@ class StratumClient:
         """Authorize with the pool"""
         print(f"\n[*] Authorizing as: {username}")
         response, notifications = self.send_request("mining.authorize", [username, password])
-        
-        # Store any notifications we received (including mining.notify jobs!)
-        self.pending_notifications.extend(notifications)
+        # Notifications are automatically stored in send_request
         
         if response and 'result' in response and response['result']:
             print(f"[✓] Authorized!")
