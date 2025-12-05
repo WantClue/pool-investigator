@@ -489,11 +489,17 @@ class PoolInvestigator:
         if url.startswith('stratum+ssl://'):
             use_ssl = True
             url = url[14:]  # Remove 'stratum+ssl://'
+        elif url.startswith('stratum+tls://'):
+            use_ssl = True
+            url = url[14:]  # Remove 'stratum+tls://'
         elif url.startswith('stratum+tcp://'):
             url = url[14:]  # Remove 'stratum+tcp://'
         elif url.startswith('stratum://'):
             url = url[10:]  # Remove 'stratum://'
         elif url.startswith('ssl://'):
+            use_ssl = True
+            url = url[6:]
+        elif url.startswith('tls://'):
             use_ssl = True
             url = url[6:]
         elif url.startswith('tcp://'):
@@ -628,10 +634,11 @@ def main():
     print(f"{'='*70}\n")
     
     # Get pool host
-    print("Enter pool host/URL (supports stratum+tcp://, stratum+ssl://, or just hostname)")
+    print("Enter pool host/URL (supports stratum+tcp://, stratum+ssl://, stratum+tls://, or just hostname)")
     print("Examples:")
     print("  - stratum+tcp://pool.example.com")
     print("  - stratum+ssl://pool.example.com")
+    print("  - stratum+tls://pool.example.com")
     print("  - pool.example.com")
     print("  - pool.example.com:3333 (with port)")
     print()
@@ -644,7 +651,7 @@ def main():
     # Check if port is already in URL
     has_port = False
     temp_url = pool_url
-    for prefix in ['stratum+ssl://', 'stratum+tcp://', 'stratum://', 'ssl://', 'tcp://']:
+    for prefix in ['stratum+ssl://', 'stratum+tls://', 'stratum+tcp://', 'stratum://', 'ssl://', 'tls://', 'tcp://']:
         if temp_url.startswith(prefix):
             temp_url = temp_url[len(prefix):]
             break

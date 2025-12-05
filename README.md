@@ -61,10 +61,11 @@ python3 investogator.py
   Extracts payout addresses from pool block templates
 ======================================================================
 
-Enter pool host/URL (supports stratum+tcp://, stratum+ssl://, or just hostname)
+Enter pool host/URL (supports stratum+tcp://, stratum+ssl://, stratum+tls://, or just hostname)
 Examples:
   - stratum+tcp://pool.example.com
   - stratum+ssl://pool.example.com
+  - stratum+tls://pool.example.com
   - pool.example.com
   - pool.example.com:3333 (with port)
 
@@ -83,6 +84,7 @@ Worker: bc1qyouraddresshere
 |--------|-------------|
 | `stratum+tcp://host:port` | Plain TCP connection |
 | `stratum+ssl://host:port` | SSL/TLS encrypted connection |
+| `stratum+tls://host:port` | SSL/TLS encrypted connection (alias) |
 | `stratum://host:port` | Plain TCP (alias) |
 | `host:port` | Plain TCP |
 | `host` | Plain TCP on default port 3333 |
